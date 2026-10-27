@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090a0f">
+<title>A Letter for Ahda</title>
+<style>
+:root{color-scheme:dark;--bg:#090a0f;--ink:#f7f0f4;--muted:#b2a8b5;--rose:#e3a5b9}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 8%,#322331 0,#17131d 35%,#090a0f 78%);color:var(--ink);font-family:Georgia,"Times New Roman",serif;overflow-x:hidden}
+#stars,.rain,.hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+.star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.45;animation:twinkle 3s ease-in-out infinite alternate}
+@keyframes twinkle{to{opacity:.08;transform:scale(.6)}}
+.rain span{position:absolute;top:-15vh;width:1px;height:60px;background:linear-gradient(transparent,#c5cbe0aa,transparent);animation:fall linear infinite;opacity:.22}
+@keyframes fall{to{transform:translateY(125vh)}}
+main{position:relative;z-index:2;min-height:100vh;display:grid;place-items:center;padding:22px 12px}
+.card{width:min(100%,470px);padding:27px 19px 24px;text-align:center;border:1px solid #ffffff1a;border-radius:22px;background:linear-gradient(145deg,#1b1720ed,#0e0d14f2);box-shadow:0 22px 75px #0008}
+.eyebrow{font:10px Arial,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#c8a8ba}
+h1{font-weight:normal;font-size:clamp(28px,8vw,39px);line-height:1.15;margin:13px 0;color:#fff1f6}
+.subtitle{font:13px/1.6 Arial,sans-serif;color:var(--muted);max-width:290px;margin:0 auto 20px}
+.envelope-wrap{height:174px;display:grid;place-items:center;perspective:900px}
+.envelope{position:relative;width:220px;height:138px;filter:drop-shadow(0 15px 18px #0008)}
+.env-back{position:absolute;inset:0;background:#4a3345;border:1px solid #926b82;border-radius:4px}
+.letter{position:absolute;left:12px;right:12px;bottom:6px;height:112px;background:#f6e9ed;color:#56384b;border-radius:3px;display:grid;place-items:center;transition:transform 1s cubic-bezier(.2,.8,.2,1),bottom 1s;z-index:2}
+.letter span{font-size:22px}
+.env-front{position:absolute;inset:0;background:#68475b;clip-path:polygon(0 0,50% 58%,100% 0,100% 100%,0 100%);z-index:4;border-radius:4px}
+.flap{position:absolute;inset:0;background:#895b73;clip-path:polygon(0 0,100% 0,50% 62%);transform-origin:top;transition:transform .8s;z-index:5}
+.seal{position:absolute;z-index:6;left:50%;top:57%;transform:translate(-50%,-50%);width:33px;height:33px;border-radius:50%;display:grid;place-items:center;background:#dfa3b8;color:#502b3d;transition:opacity .3s}
+.open .flap{transform:rotateX(180deg);z-index:1}.open .seal{opacity:0}.open .letter{bottom:45px;transform:translateY(-33px);z-index:3}
+button{border:0;border-radius:999px;padding:14px 22px;background:linear-gradient(100deg,#d89cb2,#f0c9d6);color:#281923;font:700 11px Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.hint{font:11px Arial,sans-serif;color:#9c91a0;margin-top:14px}
+.message{display:none;text-align:left;margin-top:24px;padding:22px 3px 0;border-top:1px solid #ffffff20;animation:fadeup .9s both}
+.message.show{display:block}@keyframes fadeup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.salutation{font-size:22px;color:#e9b5c6;margin:0 0 15px}
+#typed{font-size:15px;line-height:1.85;white-space:pre-wrap;overflow-wrap:anywhere;color:#f1e8ee}
+.signature{text-align:right;margin-top:20px;color:#dfa8bb;font-size:17px;font-style:italic}
+.foot{font:10px Arial,sans-serif;color:#716978;letter-spacing:.13em;text-transform:uppercase;margin-top:22px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div id="stars" aria-hidden="true"></div><div class="rain" id="rain" aria-hidden="true"></div><div class="hearts" id="hearts" aria-hidden="true"></div>
+<main><section class="card">
+<div class="eyebrow">A little something for you</div>
+<h1>Open when you're ready</h1>
+<p class="subtitle">Some feelings are easier to write than to say. 🌧️</p>
+<div class="envelope-wrap"><div class="envelope" id="envelope" aria-label="Sealed rose-colored envelope">
+<div class="env-back"></div><div class="letter"><span>with love ♡</span></div><div class="env-front"></div><div class="flap"></div><div class="seal">♥</div>
+</div></div>
+<button id="openBtn">Open your letter ✉</button>
+<div class="hint" id="hint">Take a quiet moment. This is for you.</div>
+<div class="message" id="message"><p class="salutation">To My Dear Ahda 💗</p><div id="typed"></div><div class="signature">With warmth, ♡</div></div>
+<div class="foot">A quiet note · made with care</div>
+</section></main>
+<script>
+const stars=document.getElementById('stars');
+for(let i=0;i<60;i++){let s=document.createElement('i');s.className='star';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.animationDelay=Math.random()*3+'s';s.style.animationDuration=2+Math.random()*4+'s';stars.appendChild(s)}
+const rain=document.getElementById('rain');
+for(let i=0;i<30;i++){let r=document.createElement('span');r.style.left=Math.random()*100+'%';r.style.animationDuration=4+Math.random()*6+'s';r.style.animationDelay=(-Math.random()*8)+'s';rain.appendChild(r)}
+const messageText = `Assalamualaikum, Ahda! 🤗❤️
+
+Ahda, first of all, myself Abuzar, from Chishtian, Bahawalnagar. Maine yeh message 💌 aapko kuch batane 🗣️ ke liye likha hai.
+
+Ahda, jab maine pehli baar aapko message kiya tha, to meri intention hargiz aapko tang karne ki nahi thi. Main aapko mazeed contact nahi karna chahta tha, but mujhe laga ke agar maine aapko nahi bataya, to saari zindagi mujhe guilt rahega. 🥹
+
+Ahda, main aapse kuch kehna chahta tha, but my bad luck 😓, har baar jab main kuch kehne lagta tha, to darr jata tha ke kahin aap gussa na ho jayein. Isi liye main aapko tab yeh baat nahi bata saka.
+
+Ahda, I know ke aap ek mature aur independent larki hain. But aapke dil mein kisi na kisi ke liye mohabbat zaroor hogi, aur aapko pata hoga ke woh feelings kaisi hoti hain. ❤️
+
+👉 Ab main aapko woh batane laga hoon, jiske liye main aaj tak koshish karta raha hoon.
+
+So, my dear Ahda! 😘🌹
+
+I LOVE YOU! 🌹
+I LOVE YOU! 🌹
+I LOVE YOU! 🌹
+
+Ahda, jab main chhota tha, tab se main aapko jaanta hoon, aur tab se hi mujhe aapse dil-lagi thi. 😍 Aur yahi meri sabse badi galti ban gayi ke maine aapse pyaar kiya, aur ab is galti ka azala nahi ho sakta. 💔
+
+Ahda, mujhe nahi pata ke aapke dil ❤️ mein mere liye kya hai, but agar aap mujhse poochhein, to Ahda, aap meri zindagi hain. ❤️🥹 Aur yeh main jhoot nahi bol raha. I really love you! 💕
+
+Main yeh nahi chahta ke aap bhi mujhse mohabbat karein ya mujhse baatein karein. Aapko batana mera farz tha. Aur hamare Nabi ﷺ se mansoob ek baat maine suni hai:
+
+“Agar aapko kisi se mohabbat ho, to use bata do ke aapko usse mohabbat hai, taake woh kisi ghalat fehmi mein na rahe.” 🌹💗
+
+Ahda, agar kisi wajah se maine aapko tang kiya ho, to uske liye I am really sorry. 🙏🏻❤️‍🩹
+
+💔🥀💔🥀💔🥀💔🥀
+
+Aur doosri baat, aapke dil mein shayad yeh khayal aaye ke maine aapse kaha tha ke main apni ek cousin se shadeed mohabbat karta hoon. 💗
+
+Ahda, Khuda ki kasam, woh aap hi thi! ❤️🥹 Woh aap thi, Ahda! 🫂🌹
+
+Main aapke siwa kisi aur larki ki taraf dekh bhi nahi sakta. ❤️
+
+Shayad message bohat lamba ho gaya hai, aur mere paas aapko kehne ke liye itna kuch hai jo main yahan poora nahi likh sakta. 🥹💌
+
+But at the end… ❤️
+
+Ahda, I LOVE YOU! 😘😘😘🌹
+
+Thanks 💕 for giving me some time.
+
+I’m waiting for your reply. 💌❤️
+
+— Abuzar`;
+const btn=document.getElementById('openBtn'),env=document.getElementById('envelope'),box=document.getElementById('message'),typed=document.getElementById('typed');
+let started=false;
+function hearts(){const holder=document.getElementById('hearts');for(let i=0;i<16;i++){const h=document.createElement('span');h.textContent=['♡','♥','✦'][i%3];h.style.position='absolute';h.style.left=(10+Math.random()*80)+'%';h.style.bottom='8%';h.style.color=i%2?'#d9a0b4':'#eee0e7';h.style.fontSize=(12+Math.random()*16)+'px';h.style.transition='transform 3s ease-out,opacity 3s';holder.appendChild(h);requestAnimationFrame(()=>{h.style.transform=`translate(${(Math.random()-.5)*90}px,-${180+Math.random()*300}px)`;h.style.opacity='0'});setTimeout(()=>h.remove(),3200)}}
+btn.addEventListener('click',()=>{if(started)return;started=true;env.classList.add('open');btn.textContent='Your letter is opening…';btn.disabled=true;document.getElementById('hint').textContent='';hearts();setTimeout(()=>{box.classList.add('show');let i=0;const timer=setInterval(()=>{typed.textContent+=messageText[i++]||'';if(i>=messageText.length){clearInterval(timer);btn.style.display='none'}},12)},1000)});
+</script>
+</body>
+</html>
